@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="./style.css" />
+		<meta charset="utf-8" />
+		<title>Procedural city generator in WebGL</title>
+		<script>
+		</script>
+	</head>
+	<body>
+		<div id="container">
+		</div>
+		<div id="editor">
+			<div id="controls">
+				<fieldset>
+					<legend>Mode</legend>
+					<label><input type="radio" name="mode" id="default"/> Default</label>
+					<label><input type="radio" name="mode" id="random" checked/> Random</label>
+					<label><input type="radio" name="mode" id="parameters"/> Parameters</label>
+				</fieldset>
+				<fieldset class="parameters" style="display:none;">
+					<legend>Position and size</legend>
+					<label for="posx">PosX:</label><input id="posx-range" type="range" min="-250" max="250" value="0"/><input id="posx" type="number" value="0"/>
+					<label for="posz">PosY:</label><input id="posz-range" type="range" min="-250" max="250" value="0"/><input id="posz" type="number" value="0"/>
+					<label for="sizex">SizeX:</label><input id="sizex-range" type="range" max="250" value="100"/><input id="sizex" type="number" value="100"/>
+					<label for="sizez">SizeZ:</label><input id="sizez-range" type="range" max="250" value="25"/><input id="sizez" type="number" value="25"/>
+					<label for="height">Height:</label><input id="height-range" type="range" min="0" max="250" value="50"/><input id="height" type="number" min="0" value="50"/>
+					<label for="floorHeight">FloorHeight:</label><input id="floorHeight-range" type="range" min="0" max="20" step="0.1" value="5"/><input id="floorHeight" type="number" min="0" step="0.1" value="5"/>
+				</fieldset>
+				<fieldset class="parameters" style="display:none;">
+					<legend>Windows</legend>
+					<label for="windowsGroup">Windows Group:</label>
+					<label class="radio"><input type="radio" name="windowsGroup" id="pairs" checked/>Pairs</label><br/>
+					<label class="radio"><input type="radio" name="windowsGroup" id="normal"/>Normal</label>
+					<label for="windowsRepetition">Window Repetition:</label><br/>
+					<label class="radio"><input type="radio" name="windowRepetition" id="random" checked/>Random</label><br/>
+					<label class="radio"><input type="radio" name="windowRepetition" id="lineal"/>Lineal</label>
+					<label for="windowsSeparation">Windows Separation:</label><input id="windowsSeparation-range" type="range" min="0" max="15" step="0.1" value="5"/><input id="windowsSeparation" type="number" min="0" step="0.1" value="5"/>
+				</fieldset>
+				<fieldset class="parameters" style="display:none;">
+					<legend>Other</legend>
+					<label for="wallTexture">Wall texture:</label><input type="text" id="wallTexture" list="wallTextures" value="./textures/wall/brick-wall.jpg"/>
+					<label for="roofTexture">Roof texture:</label><input type="text" id="roofTexture" list="roofTextures" value="./textures/roof/concrete-bare.jpg"/>
+					<label for="wallHeightProportion">Roof wall height proportion:</label><input id="wallHeightProportion-range" type="range" min="0" max="1" step="0.05" value=".4"/><input id="wallHeightProportion" type="number" min="0" step="0.05" value=".4"/>
+					<label for="probabilityNextFloorDifferentShape">Probability next floor different shape:</label><input id="probabilityNextFloorDifferentShape-range" type="range" min="0" max="1" step="0.05" value=".25"/><input id="probabilityNextFloorDifferentShape" type="number" min="0" max="1" step="0.05" value=".25"/>
+					<label for="minSolidWidth">Min Solid Width:</label><input id="minSolidWidth-range" type="range" min="0" max="250" value="20"/><input id="minSolidWidth" type="number" min="0" value="20"/>
+					<label for="maxSolidWidth">Max Solid Width:</label><input id="maxSolidWidth-range" type="range" min="0" max="250" value="100"/><input id="maxSolidWidth" type="number" min="0" value="100"/>
+					<datalist id="wallTextures">
+						<option value="./textures/wall/BrickFacade0037_1_S.jpg"/>
+						<option value="./textures/wall/BrickLargeBrown0016_2_S.jpg"/>
+						<option value="./textures/wall/BrickLargeBrown0017_2_S.jpg"/>
+						<option value="./textures/wall/BrickLargeBrown0021_2_S.jpg"/>
+						<option value="./textures/wall/BrickLargeBrown0022_7_S.jpg"/>
+						<option value="./textures/wall/BrickLargeDirty0016_5_S.jpg"/>
+						<option value="./textures/wall/BrickLargeDirty0029_19_S.jpg"/>
+						<option value="./textures/wall/BrickLargeDirty0039_5_S.jpg"/>
+						<option value="./textures/wall/BrickLargePainted0026_9_S.jpg"/>
+						<option value="./textures/wall/BrickLargePainted0046_7_S.jpg"/>
+						<option value="./textures/wall/BrickLargePainted0051_5_S.jpg"/>
+						<option value="./textures/wall/BrickRound0109_9_S.jpg"/>
+						<option value="./textures/wall/BrickSmallDark0003_2_S.jpg"/>
+						<option value="./textures/wall/BrickSmallPatterns0031_2_S.jpg"/>
+						<option value="./textures/wall/BrickSmallPatterns0041_11_S.jpg"/>
+						<option value="./textures/wall/brick-wall.jpg"/>
+						<option value="./textures/walls-and-roof/ConcreteBunker0077_1_S.jpg"/>
+						<option value="./textures/walls-and-roof/ConcreteBunker0213_1_S.jpg"/>
+					</datalist>
+					<datalist id="roofTextures">
+						<option value="./textures/roof/bunker-leaking.jpg"/>
+						<option value="./textures/roof/concrete-bare.jpg"/>
+						<option value="./textures/roof/ConcreteBunkerDirty0008_5_S.jpg"/>
+						<option value="./textures/roof/ConcreteFloorsDamaged0002_16_S.jpg"/>
+						<option value="./textures/roof/ConcreteFloorsDamaged0010_5_S.jpg"/>
+						<option value="./textures/roof/ConcreteFloorsDamaged0010_6_S.jpg"/>
+						<option value="./textures/roof/floor-herringbone.jpg"/>
+						<option value="./textures/roof/FloorHerringbone0097_1_S.jpg"/>
+						<option value="./textures/walls-and-roof/ConcreteBunker0077_1_S.jpg"/>
+						<option value="./textures/walls-and-roof/ConcreteBunker0213_1_S.jpg"/>
+					</datalist>
+				</fieldset>
+				<fieldset>
+					<legend>Atlas</legend>
+					<div id="display-atlas"></div>
+				</fieldset>
+				<fieldset>
+					<legend>Camera</legend>
+					<button id="reset-camera" class="bluebtn"><span class="label">Reset Camera Position</span></button>
+				</fieldset>
+			</div>
+			<div id="create-building-wrapper">
+				<button id="create-building" class="greenbtn"><span class="label">Rebuild</span></button>
+			</div>
+			<div id="progress-wrapper" style="display: hidden;">
+				<progress id="progress" value="0" max="100"></progress>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery-2.0.1.min.js"></script>
+	<script src="js/jquery.mousewheel.min.js"></script>
+	<script src="js/three.min.js"></script>
+	<script src="js/BuildingUtils.js"></script>
+	<script src="js/Atlas.js"></script>
+	<script src="js/FloorShape.js"></script>
+	<script src="js/FloorShapeRule.js"></script>
+	<script src="js/FloorGeometry.js"></script>
+	<script src="js/Building.js"></script>
+	<script src="js/ColladaLoader.js"></script>
+	<script src="js/functions.js"></script>
+	<script src="js/controls.js"></script>
+	<script src="js/camera.js"></script>
+	<script src="js/draw.js"></script>
+</html>

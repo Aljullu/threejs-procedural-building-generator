@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.67.1 r57755</authoring_tool>
+    </contributor>
+    <created>2013-06-29T15:35:39</created>
+    <modified>2013-06-29T15:35:39</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_geometries>
+    <geometry id="Cube_002-mesh" name="Cube.002">
+      <mesh>
+        <source id="Cube_002-mesh-positions">
+          <float_array id="Cube_002-mesh-positions-array" count="72">3 0 0 3 2 0 -3 2 0 -3 0 0 3 0 5 3 2 5 -3 2 5 -3 0 5 2.85 2 0.125 -2.85 2 0.125 2.85 2 4.875 -2.85 2 4.875 2.85 1.01922 0.125 -2.85 1.01922 0.125 2.85 1.01922 4.875 -2.85 1.01922 4.875 3 1.759804 5 3 1.759804 0 -3 1.759804 5 -3 1.759804 0 -3 1.759804 6.985042 3 1.759804 6.985042 -3 2 6.985042 3 2 6.985042</float_array>
+          <technique_common>
+            <accessor source="#Cube_002-mesh-positions-array" count="24" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube_002-mesh-normals">
+          <float_array id="Cube_002-mesh-normals-array" count="132">-1 0 0 0 -1 0 1 0 0 0 1 0 0 0 1 0 1 0 0 0 -1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 0 0 0 1 -1 0 0 -1 0 0 1 0 0 0 0 1 0 0 -1 -1 0 0 0 0 -1 0 -1 0 1 0 0 -1 0 0 0 -1 0 1 0 0 0 1 0 0 0 1 0 1 0 0 0 -1 0 -1 0 0 -1 0 0 -1 0 0 -1 0 1 0 0 0 0 1 -1 0 0 -1 0 0 1 0 0 0 0 1 0 0 -1 -1 0 0 0 0 -1 0 -1 0 1 0 0</float_array>
+          <technique_common>
+            <accessor source="#Cube_002-mesh-normals-array" count="44" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube_002-mesh-vertices">
+          <input semantic="POSITION" source="#Cube_002-mesh-positions"/>
+        </vertices>
+        <polylist count="44">
+          <input semantic="VERTEX" source="#Cube_002-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube_002-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>16 0 5 0 17 0 2 1 1 1 9 1 18 2 7 2 19 2 7 3 4 3 3 3 17 4 1 4 19 4 16 5 18 5 21 5 9 6 8 6 13 6 6 7 2 7 11 7 1 8 5 8 8 8 5 9 6 9 10 9 14 10 15 10 12 10 8 11 10 11 12 11 10 12 11 12 14 12 11 13 9 13 15 13 4 14 16 14 0 14 6 15 18 15 2 15 0 16 17 16 3 16 7 17 18 17 4 17 5 18 16 18 23 18 20 19 22 19 21 19 6 20 5 20 22 20 18 21 6 21 20 21 5 22 1 22 17 22 1 23 8 23 9 23 7 24 3 24 19 24 4 25 0 25 3 25 1 26 2 26 19 26 18 27 20 27 21 27 8 28 12 28 13 28 2 29 9 29 11 29 5 30 10 30 8 30 6 31 11 31 10 31 15 32 13 32 12 32 10 33 14 33 12 33 11 34 15 34 14 34 9 35 13 35 15 35 16 36 17 36 0 36 18 37 19 37 2 37 17 38 19 38 3 38 18 39 16 39 4 39 16 40 21 40 23 40 22 41 23 41 21 41 5 42 23 42 22 42 6 43 22 43 20 43</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Cube" name="Cube" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube_002-mesh"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

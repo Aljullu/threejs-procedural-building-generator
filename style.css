@@ -1,0 +1,262 @@
+#container > canvas {
+	position: absolute;
+		top: 0;
+		right: 0;
+}
+html, body {
+	background: #000;
+	color: #333;
+	font-family: 'Open Sans',sans-serif;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+}
+#container {
+	background: #000;
+	margin: 0 auto;
+	overflow: hidden;
+	width: 800px;
+	height: 500px;
+}
+#display-atlas {
+	text-align: center;
+}
+#atlas {
+	width: 242px;
+}
+#editor {
+	background: rgba(255,255,255,.5);
+	border-right: 1px solid rgba(225, 225, 225, 0.698);
+	padding: 0 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	position: absolute;
+		bottom: 0;
+		left: 0;
+		top: 0;
+	width: 280px;
+	z-index: 99;
+}
+fieldset {
+	border: 2px dotted #999;
+	margin: 10px 0;
+}
+legend {
+		-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #999;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 0 2px 5px #333;
+	padding: 7px;
+	text-align: center;
+	width: 100%;
+}
+input {
+	vertical-align: middle;
+}
+input[type="number"] {
+		-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-align: right;
+	width: 20%;
+}
+input[type="range"] {
+		-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0 5% 0 0;
+	width: 75%;
+}
+input[type="text"] {
+		-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+}
+#controls {
+	overflow: auto;
+	padding: 0 10px;
+	position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 83px;
+		left: 0;
+}
+fieldset {
+	font-size: .8em;
+}
+label:not(.radio) {
+	border-top: 1px dotted #999;
+	display: block;
+	margin-top: 5px;
+	padding-top: 5px;
+}
+legend + label:not(.radio) {
+	border-top: 0;
+}
+#create-building-wrapper,
+#progress-wrapper,
+#reset-camera-wrapper {
+	border-top: 1px dashed #999;
+	height: 42px;
+	line-height: 42px;
+	padding: 20px;
+	position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	text-align: center;
+}
+
+/*------------------------------------*\
+	$BUTTON
+\*------------------------------------*/
+button {
+	background: #F3F3F3;
+	border: solid 1px #D9D9D9;
+	border-radius: 2px;
+	color: #444;
+	cursor: pointer;
+	margin: 0;
+	padding: 10px;
+	text-shadow: 0 1px 0 #fff;
+	transition: border-color .20s;
+	min-width: 100%;
+}
+button:hover {
+	background: #F4F4F4;
+	border-color: #C0C0C0;
+	color: #333;
+}
+button:active {
+	border-color: #4D90FE;
+	color: #4D90FE;
+	-moz-box-shadow:inset 0 0 10px #D4D4D4;
+	-webkit-box-shadow:inset 0 0 10px #D4D4D4;
+	box-shadow:inset 0 0 10px #D4D4D4;
+}
+button.bluebtn {
+	border: 1px solid #3079ED !important;
+	background: #4B8DF8;
+	background: -webkit-linear-gradient(top, #4C8FFD, #4787ED);
+	background: -moz-linear-gradient(top, #4C8FFD, #4787ED);
+	background: -ms-linear-gradient(top, #4C8FFD, #4787ED);
+	background: -o-linear-gradient(top, #4C8FFD, #4787ED);
+ -webkit-transition: border .20s;
+ -moz-transition: border .20s;
+ -o-transition: border .20s;
+ transition: border .20s;
+}
+button.bluebtn:hover {
+	border: 1px solid #2F5BB7 !important;
+	background: #3F83F1;
+	background: -webkit-linear-gradient(top, #4D90FE, #357AE8);
+	background: -moz-linear-gradient(top, #4D90FE, #357AE8);
+	background: -ms-linear-gradient(top, #4D90FE, #357AE8);
+	background: -o-linear-gradient(top, #4D90FE, #357AE8);
+}
+button.greenbtn {
+	border: 1px solid #29691D !important;
+	background: #3A8E00;
+	background: -webkit-linear-gradient(top, #3C9300, #398A00);
+	background: -moz-linear-gradient(top, #3C9300, #398A00);
+	background: -ms-linear-gradient(top, #3C9300, #398A00);
+	background: -o-linear-gradient(top, #3C9300, #398A00);
+ -webkit-transition: border .20s;
+ -moz-transition: border .20s;
+ -o-transition: border .20s;
+ transition: border .20s;
+}
+button.greenbtn:hover {
+	border: 1px solid #2D6200 !important;
+	background: #3F83F1;
+	background: -webkit-linear-gradient(top, #3C9300, #368200);
+	background: -moz-linear-gradient(top, #3C9300, #368200);
+	background: -ms-linear-gradient(top, #3C9300, #368200);
+	background: -o-linear-gradient(top, #3C9300, #368200);
+}
+button.redbtn {
+	border: 1px solid #D14836 !important;
+	background: #D64937;
+	background: -webkit-linear-gradient(top, #DC4A38, #D14836);
+	background: -moz-linear-gradient(top, #DC4A38, #D14836);
+	background: -ms-linear-gradient(top, #DC4A38, #D14836);
+	background: -o-linear-gradient(top, #DC4A38, #D14836);
+ -webkit-transition: border .20s;
+ -moz-transition: border .20s;
+ -o-transition: border .20s;
+ transition: border .20s;
+}
+button.redbtn:hover {
+	border: 1px solid #B0281A !important;
+	background: #D14130;
+	background: -webkit-linear-gradient(top, #DC4A38, #C53727);
+	background: -moz-linear-gradient(top, #DC4A38, #C53727);
+	background: -ms-linear-gradient(top, #DC4A38, #C53727);
+	background: -o-linear-gradient(top, #DC4A38, #C53727);
+}
+button.action:hover {
+	-moz-box-shadow: 0 1px 0px #DDD;
+	-webkit-box-shadow: 0 1px 0px #DDD;
+	box-shadow:iset 0 1px 0px #DDD;
+}
+button.action:active {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	border-color: #C6C6C6 !important;
+}
+button.bluebtn:active {
+	border-color: #2F5BB7 !important;
+}
+button.greenbtn:active {
+	border-color: #2D6200 !important;
+}
+button.redbtn:active {
+	border-color: #B0281A !important;
+}
+/*------------------------------------*\
+	$BUTTON LABEL
+\*------------------------------------*/
+ button span.label {
+	display: inline-block;
+	float: left;
+	line-height: 17px;
+	height: 18px;
+	padding: 0 1px;
+	overflow: hidden;
+	color: #444;
+ transition: color .20s;
+	min-width: 100%;
+}
+button span.label {
+	line-height: 15px !important;
+}
+button:hover .label.bluebtn {
+	color: #7090C8;
+}
+button:hover .label.greenbtn {
+	color: #42B449;
+}
+button:hover .label.yellow {
+	color: #F7CB38;
+}
+button.bluebtn .label {
+	color: #FFF !important;
+	text-shadow: 0 1px 0 #2F5BB7 !important;
+}
+button.greenbtn .label {
+	color: #FFF !important;
+	text-shadow: 0 1px 0 #2D6200 !important;
+}
+button.redbtn .label {
+	color: #FFF !important;
+	text-shadow: 0 1px 0 #B0281A !important;
+}
+button.action .label {
+	padding: 0 17px !important;
+}
+button.action:active .label {
+	color: #333 !important;
+}
+button.bluebtn:active .label, button.greenbtn:active .label, button.redbtn:active .label {
+	color: #FFF !important;
+}
