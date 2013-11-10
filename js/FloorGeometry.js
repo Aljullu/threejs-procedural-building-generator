@@ -56,20 +56,28 @@ THREE.FloorGeometry = function ( parameters ) {
 						// Create face
 						var face;
 						if (i !== numPoints) {
-								face = new THREE.Face4((i+1)*2-2, (i+1)*2-1, (i+1)*2-3, (i+1)*2-4);
+								// L/R: left/right, TD: top/down
+								// face = new THREE.Face3(LR, TR, TL);
+								// face2 = new THREE.Face3(DR, TL, DL);
+								face = new THREE.Face3((i+1)*2-2, (i+1)*2-1, (i+1)*2-3);
+								face2 = new THREE.Face3((i+1)*2-2, (i+1)*2-3, (i+1)*2-4);
 						}
 						else { // diferent values for the last edge
-								face = new THREE.Face4(0, 1, (numPoints)*2-1, (numPoints)*2-2);
+								face = new THREE.Face3(0, 1, (numPoints)*2-1);
+								face2 = new THREE.Face3(0, (numPoints)*2-1, (numPoints)*2-2);
 						}
 						
 						// Update normals
 						updateFaceNormals(face);
+						updateFaceNormals(face2);
 						
 						// Assign wall material
 						face.materialIndex = 0;
+						face2.materialIndex = 0;
 						
 						// Add face to geometry
 						scope.faces.push(face);
+						scope.faces.push(face2);
 						
 						// Try to print the texture's full width because it is tileable
 						// Avoid it being 0. Min value is 1
@@ -87,10 +95,16 @@ THREE.FloorGeometry = function ( parameters ) {
 								}
 						}
 						
-						// Add fave vertexs Uvs
+						// Add face vertexs Uvs
+						// face 1
 						scope.faceVertexUvs[ 0 ].push( [
 									new THREE.Vector2( numColumns, 0 ),
 									new THREE.Vector2( numColumns, numRows ),
+									new THREE.Vector2( 0, numRows )
+									] );
+						// face 2
+						scope.faceVertexUvs[ 0 ].push( [
+									new THREE.Vector2( numColumns, 0 ),
 									new THREE.Vector2( 0, numRows ),
 									new THREE.Vector2( 0, 0 )
 									] );
