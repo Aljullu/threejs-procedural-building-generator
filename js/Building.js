@@ -8,19 +8,19 @@ function Building (parameters) {
 		$("#progress-wrapper").show();
 		$("#progress").attr("value", 0);
 	}
-	
+
 	// Allow accessing this inside functions
 	var scope = this;
-	
+
 	// Set empty array as default
 	if (!parameters) parameters = [];
 	// Get data from parameters array
 	parseParameters( parameters );
 	var texturesIndex = []; // save texture index for each mesh
 	var materials = createMaterials( parameters );
-	
+
 	var buildingGeometry = new THREE.Geometry();
-	
+
 	// Load meshes
 	var numberOfMeshesToLoad = 0;
 	if (parameters.windows.length !== 0 || parameters.roof.objects.length !== 0) {
@@ -34,10 +34,10 @@ function Building (parameters) {
 	else {
 		createBuildingGeometry();
 	}
-	
+
 	// Save data from parameters to building properties
 	function parseParameters ( parameters ) {
-		
+
 		// Numeric & boolean values
 		if (parameters.mode === "default") {
 			scope.sizeX = parameters.sizeX || BUILDING_DEFAULT_SIZE_X;
@@ -69,21 +69,21 @@ function Building (parameters) {
 			maxSolidWidth = parameters.maxSolidWidth || BUILDING_DEFAULT_MAX_SOLID_WIDTH;
 			scope.textureWall = parameters.textureWall || getRandomBuildingWallTexture();
 			scope.textureRoof = parameters.textureRoof || getRandomBuildingRoofTexture();
-			
+
 			if (parameters.windowsGroup !== undefined) {
 				scope.windowsGroup = parameters.windowsGroup;
 			}
 			else {
-				scope.windowsGroup = (THREE.Math.random16() < .5) ? "pairs" : "normal";
+				scope.windowsGroup = (Math.random() < .5) ? "pairs" : "normal";
 			}
 		}
-		
+
 		// Roof
 		// Set and empty array to make the following code more simple
 		if (parameters.roof === undefined) {
 			parameters.roof = [];
 		}
-		
+
 		if (parameters.roof.wallHeightProportion !== undefined)
 			scope.roofWallProportion = parameters.roof.wallHeightProportion;
 		else {
@@ -94,24 +94,24 @@ function Building (parameters) {
 				scope.roofWallProportion = THREE.BuildingUtils.randomBetween(.2,.6);
 			}
 		}
-		
+
 		if (parameters.roof.objects === undefined) {
 			if (parameters.mode === "default") parameters.roof.objects = BUILDING_DEFAULT_ROOF_ELEMENTS;
 			else parameters.roof.objects = getRandomRoofObjects();
 		}
-		
-		
+
+
 		// Windows
 		if (parameters.windows === undefined) {
 			parameters.windows = [];
 		}
-		
+
 		if (parameters.windows.length === 0) {
 			if (parameters.mode === "default") parameters.windows = BUILDING_DEFAULT_WINDOWS;
 			else parameters.windows = getRandomWindows();
 		}
-		
-		
+
+
 		// Floors
 		if (parameters.floors === undefined) {
 			if (parameters.mode === "default") {
@@ -135,28 +135,29 @@ function Building (parameters) {
 		}
 		parameters.floors[0].windowsGroup = "normal";
 	}
-	
+
 	// Create materials
 	function createMaterials ( parameters ) {
-		
+    var textureLoader = new THREE.TextureLoader();
+
 		// Wall and roof materials
-		var textureWall = THREE.ImageUtils.loadTexture( scope.textureWall, {}, function(texture) {
+		var textureWall = textureLoader.load( scope.textureWall, function(texture) {
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		});
 		var wallMaterial = new THREE.MeshPhongMaterial( { map: textureWall/*, transparent: true, opacity: 0.5*/ } );
-		
+
 		// Make it double sided to make roof wall visible in both sides
 		if (scope.roofWallProportion) {
 			wallMaterial.side = THREE.DoubleSide;
 		}
-		var textureRoof = THREE.ImageUtils.loadTexture( scope.textureRoof, {}, function(texture) {
+		var textureRoof = textureLoader.load( scope.textureRoof, function(texture) {
 			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		});
 		var roofMaterial = new THREE.MeshPhongMaterial( { map: textureRoof/*, transparent: true, opacity: 0.1*/  } );
-		
+
 		// Create array of textures
 		var texturesPath = []; // array of texture's paths
-		
+
 		// Add windows textures
 		for (var i = 0; i < parameters.windows.length; i++) {
 			setRelationMeshTexture( parameters.windows[i].mesh, parameters.windows[i].texture );
@@ -171,27 +172,27 @@ function Building (parameters) {
 		for (var i = 0; i < parameters.roof.objects.length; i++) {
 			setRelationMeshTexture( parameters.roof.objects[i].mesh, parameters.roof.objects[i].texture );
 		}
-		
+
 		// Create texture atlas
 		atlas = new Atlas(texturesPath);
-		
+
 		// Get canvas and create texture
 		var textureAtlas = new THREE.Texture(canvas);
 		textureAtlas.needsUpdate = true;
-		
+
 		// Create material
 		var materialAtlas = new THREE.MeshPhongMaterial( { map: textureAtlas/*, transparent: true, opacity: 0.1*/ } );
-		
+
 		// Make it double sided to make roof wall visible in both sides
 		if (scope.roofWallProportion) {
 			materialAtlas.side = THREE.DoubleSide;
 		}
-		
+
 		return [wallMaterial, roofMaterial, materialAtlas];
-		
+
 		// Saves relations between mesh and texture
 		function setRelationMeshTexture( mesh, texture ) {
-				
+
 			// Check if texture is already in our list
 			for (var i = 0; i < texturesPath.length; i++) {
 				if (texturesPath[i] === texture) {
@@ -204,7 +205,7 @@ function Building (parameters) {
 			texturesIndex[mesh] = texturesPath.length - 1; // set index
 		}
 	}
-	
+
 	// Create floorGeometryParameters
 	function createFloorGeometryParameters ( parameters ) {
 		// Shape
@@ -244,41 +245,41 @@ function Building (parameters) {
 			"sizeZ": scope.sizeZ,
 			"textureId": 0
 		};
-		
+
 		return floorGeometryParameters;
 	}
-	
+
 	// Create floors
 	function createBuildingGeometry ( listOfGeometries ) {
 		// Create parameters array for FloorGeometry
 		var commonFloorGeometryParameters = createFloorGeometryParameters ( parameters );
-		
+
 		var numberOfFloors = Math.floor(scope.height/scope.floorHeight);
 		scope.height = scope.floorHeight * numberOfFloors; // modify building height according to floor height
 		var center = new THREE.Vector2();
 		var nextFloorWithDifferentShape = false;
 		var acomulatedHeight = 0;
-		
+
 		// Create floors' geometry
 		for (var i = 0; i < numberOfFloors; i++) {
-				
+
 			if (debug) $("#progress").attr("value", 20 + i/numberOfFloors * 60);
-			
+
 			// Clone common parameters
 			var floorGeometryParameters = [];
 			for (var key in commonFloorGeometryParameters) {
 				floorGeometryParameters[key] = commonFloorGeometryParameters[key];
 			}
-			
+
 			// Avoid oldFloorGeometryParametersShape being null
 			if (i === 0) {
 				oldFloorGeometryParametersShape = floorGeometryParameters.shape.clone();
 			}
-			
+
 			// Update floor with different shape info
 			var thisFloorWithDifferentShape = nextFloorWithDifferentShape;
-			nextFloorWithDifferentShape = (THREE.Math.random16() < scope.probabilityNextFloorDifferentShape && i < numberOfFloors -1) ? true : false;
-			
+			nextFloorWithDifferentShape = (Math.random() < scope.probabilityNextFloorDifferentShape && i < numberOfFloors -1) ? true : false;
+
 			// Get specific floor data
 			var thisFloorWindowsSeparation = scope.windowsSeparation;
 			if (parameters.floors) {
@@ -291,33 +292,33 @@ function Building (parameters) {
 					}
 				}
 			}
-			
+
 			// Base height
 			floorGeometryParameters.baseHeight = acomulatedHeight;
-			
+
 			// Draw roof?
 			if (i === numberOfFloors - 1 || nextFloorWithDifferentShape) {
 				floorGeometryParameters.drawRoof = true;
 			}
 			else floorGeometryParameters.drawRoof = false;
-			
+
 			// Create geometry
 			var floorGeometry = new THREE.FloorGeometry( floorGeometryParameters );
-			
+
 			// Get center of the building's plant.
 			// Only in the first floor, all others floors will be centered
 			// to this point
 			if (i === 0) {
 				center = floorGeometry.shape.getCenter();
 			}
-			
+
 			// Insert windows
 			if (numberOfMeshesToLoad > 0) {
 				var windowsToInsertInThisFloor = [];
 				if (parameters.floors[i]) {
 					if ( parameters.floors[i].windows.length > 0 ) {
 						var startingMesh = parameters.windows.length;
-						
+
 						// Count windows of the previous floors
 						for (var j = 0; j < i; j++) {
 							startingMesh += parameters.floors[j].windows.length;
@@ -333,13 +334,13 @@ function Building (parameters) {
 						windowsToInsertInThisFloor.push(listOfGeometries[j].clone());
 					}
 				}
-				
+
 				floorGeometry.insertWindows( windowsToInsertInThisFloor, thisFloorWindowsSeparation, scope.windowsGroup, scope.windowRepetition );
 			}
 			// Insert roof objects
 			if (parameters.roof.objects.length > 0) {
 				var objectsToInsert = [];
-				var startingMesh = parameters.windows.length;	
+				var startingMesh = parameters.windows.length;
 				if (parameters.floors) {
 					for (var j = 0; j < numberOfFloors - 1; j++) {
 						if (parameters.floors[j]) {
@@ -359,12 +360,12 @@ function Building (parameters) {
 					floorGeometry.insertRoofElements( objectsToInsert, oldFloorGeometryParametersShape );
 				}
 			}
-			
+
 			// Merge
 			floorGeometry.move( center );
-						
-			THREE.GeometryUtils.merge(buildingGeometry, floorGeometry);
-		
+
+			buildingGeometry.merge(floorGeometry);
+
 			// Roof wall
 			if ((i === numberOfFloors -1 || thisFloorWithDifferentShape) && parameters.roof) {
 				if (scope.roofWallProportion) {
@@ -373,22 +374,22 @@ function Building (parameters) {
 					for (var key in floorGeometryParameters) {
 						roofParameters[key] = floorGeometryParameters[key];
 					}
-					
+
 					roofParameters.roofWallProportion = scope.roofWallProportion;
 					roofParameters.drawRoof = false;
 					roofParameters.textureId = 1;
-					
+
 					if (i === numberOfFloors - 1) {
 						roofParameters.baseHeight = acomulatedHeight + parseFloat(scope.floorHeight);
 						var roofWallGeometry = new THREE.FloorGeometry( roofParameters );
 						roofWallGeometry.move( center );
-						THREE.GeometryUtils.merge(buildingGeometry, roofWallGeometry);
+						buildingGeometry.merge(roofWallGeometry);
 					}
 					if (thisFloorWithDifferentShape) {
 						roofParameters.baseHeight = acomulatedHeight;
-						
+
 						var arrayOfShapes = floorGeometryParameters.shape.getExclusionWalls(oldFloorGeometryParametersShape);
-						
+
 						if (arrayOfShapes.length > 0) {
 							for (var j = 0; j < arrayOfShapes.length; j++) {
 								roofParameters.doNotDrawLastEdge = true;
@@ -396,13 +397,13 @@ function Building (parameters) {
 								roofParameters.shape.points = arrayOfShapes[j];
 								var roofWallGeometry = new THREE.FloorGeometry( roofParameters );
 								roofWallGeometry.move( center );
-								THREE.GeometryUtils.merge(buildingGeometry, roofWallGeometry);
+								buildingGeometry.merge(roofWallGeometry);
 							}
 						}
 					}
 				}
 			}
-			
+
 			// Clone shape
 			oldFloorGeometryParametersShape = floorGeometryParameters.shape.clone();
 			if (nextFloorWithDifferentShape) {
@@ -412,20 +413,20 @@ function Building (parameters) {
 		}
 		addBuildingMeshToScene();
 	}
-	
+
 	// Load windows meshes
 	function loadMeshes(listOfGeometries, typeLoading, numberOfMeshesToLoad) { // TODO where are parameters taken from?
-		
+
 		// Create loader
 		var loader = new THREE.ColladaLoader();
 		loader.options.convertUpAxis = true;
-		
+
 		if (debug) $("#progress").attr("value", typeLoading/numberOfMeshesToLoad * 20);
-		
+
 		// Get mesh and texture paths
 		var meshPath = ''; // default value
 		var meshesChecked = 0;
-		
+
 		// If mesh is in the default settings
 		if (typeLoading < parameters.windows.length) {
 			meshPath = parameters.windows[typeLoading].mesh;
@@ -443,25 +444,27 @@ function Building (parameters) {
 				meshesChecked += parameters.floors[i].windows.length;
 			}
 		}
-		
+
 		var meshesCheckedBeforeRoofObjects = meshesChecked;
 		if (meshPath === "") { // we hadn't found the mesh path yet, probably it is a roof object
 			meshPath = parameters.roof.objects[typeLoading - meshesChecked].mesh;
 		}
-		
+
 		// Load mesh
 		loader.load(meshPath, function (collada) {
-				
+
 			// Get geometry
-			var geometry = collada.scene.children[0].geometry.clone();
-			
+      var geometry = collada.scene.children[0].children[0].geometry.clone();
+
 			// Set material index to point to the map
-			THREE.GeometryUtils.setMaterialIndex( geometry, 2 );
-			
+      for (var i = 0; i < geometry.faces.length; i++) {
+        geometry.faces[i].materialIndex = 2;
+      }
+
 			// Add geometry to array
 			atlas.updateGeometryCoordinates(geometry, texturesIndex[meshPath] );
 			listOfGeometries.push( geometry );
-			
+
 			// Load the next type if it exists
 			if (typeLoading + 1 < numberOfMeshesToLoad) {
 				loadMeshes(listOfGeometries, typeLoading + 1, numberOfMeshesToLoad);
@@ -469,19 +472,19 @@ function Building (parameters) {
 			else createBuildingGeometry(listOfGeometries);
 		});
 	}
-	
+
 	// Add building to scene
 	function addBuildingMeshToScene() {
-		
+
 		// Create mesh
 		scope.mesh = new THREE.Mesh(buildingGeometry, new THREE.MeshFaceMaterial(materials));
-		
+
 		// Some other configs
 		scope.mesh.rotation.x = Math.PI/2;
 		scope.mesh.position.set(scope.posX, 0, scope.posZ);
-		
+
 		scene.add(scope.mesh);
-		
+
 		if (debug) {
 			var time = new Date().getTime() - start;
 			$("#progress").attr("value",100);

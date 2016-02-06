@@ -3,17 +3,17 @@ THREE.BuildingUtils = {
     // Given an array of THREE.Vector2 remove consecutive
 	// duplicate points
     removeConsecutiveDuplicates: function ( points, precisionPoints ) {
-        
+
         // Return empty arrays
         if (points.length === 0) return points;
-        
+
         // Flag to know if in the last iteration there were duplicates
         var thereWereDuplicates = true;
         var lastPoint = new THREE.Vector2(0,0);
-        
+
         while (thereWereDuplicates) { // check it multiple times to prevent more than one duplicate
             thereWereDuplicates = false;
-            
+
             // Check all points
             for (var i = 0; i < points.length; i++) {
                 if (THREE.BuildingUtils.compare(lastPoint.x, points[i].x, precisionPoints) &&
@@ -32,21 +32,21 @@ THREE.BuildingUtils = {
                     points.splice(points.length-1,1);
             }
         }
-        
+
         return points;
     },
-    
-    
+
+
     // MATH
     // Compare two number with some precision
     compare: function (a, b, precisionPoints) {
-        
+
         // Set precision
         if (precisionPoints === undefined) {
             precisionPoints = 3;
         }
         var precision = Math.pow( 10, precisionPoints );
-        
+
         return Math.round(a*precision)/precision === Math.round(b*precision)/precision;
     },
 	// Given X between 0 and 1, ponderate it between a and b
@@ -55,17 +55,17 @@ THREE.BuildingUtils = {
     },
 	// Returns a random number between a and b
     randomBetween: function (a, b) {
-        return this.ponderate(THREE.Math.random16(), a, b);
-    },	
+        return this.ponderate(Math.random(), a, b);
+    },
     // Returns true if a < x < b or b < x < a
     isBetween: function (x, a, b, precisionPoints) {
-        
+
         // Set precision
         if (precisionPoints === undefined) {
             precisionPoints = 3;
         }
         var precision = Math.pow( 10, precisionPoints );
-        
+
         x = Math.round(x * precision)/precision;
         a = Math.round(a * precision)/precision;
         b = Math.round(b * precision)/precision;
@@ -80,23 +80,23 @@ THREE.BuildingUtils = {
     // More info: http://en.wikipedia.org/wiki/Cramer%27s_rule#Explicit_formulas_for_small_systems
     eqSolver: function (a, b, e, c, d, f) {
             var ans = [];
-            
+
             ans[0] = (e*d-b*f)/(a*d-b*c);
             ans[1] = (a*f-e*c)/(a*d-b*c);
-            
+
             return ans;
     },
-    
+
     // GEOMETRY
 	// Returns max and min of the given array of Vector2/3
     getBoundingBox: function (points) {
         // Flag that says if we are working in 2D space or 3D
         var thirdDimension = false;
-        
+
         if (points[0].z !== undefined) {
             thirdDimension = true;
         }
-        
+
         var min, max;
         if (!thirdDimension) {
             min = new THREE.Vector2();
@@ -106,7 +106,7 @@ THREE.BuildingUtils = {
             min = new THREE.Vector3();
             max = new THREE.Vector3();
         }
-	
+
         min.x = Number.MAX_VALUE;
         max.x = Number.MIN_VALUE;
         min.y = Number.MAX_VALUE;
@@ -121,7 +121,7 @@ THREE.BuildingUtils = {
             var pointY = points[i].y;
             var pointZ = 0;
             if (thirdDimension) pointZ = points[i].z;
-			
+
 			// Compare and save
             if (pointX < min.x) min.x = pointX;
             if (pointX > max.x) max.x = pointX;
@@ -132,7 +132,7 @@ THREE.BuildingUtils = {
                 if (pointZ > max.z) max.z = pointZ;
             }
         }
-        
+
         return [min, max];
     },
 	// Given two points, returns a line in the format aX - bY = e
@@ -157,7 +157,7 @@ THREE.BuildingUtils = {
         }
         return ans;
     },
-		
+
     // It checks all lines between vertices in polygon1 with
     // all lines between vertices in polygon2 and if some
     // of them collide, returns true
@@ -166,26 +166,26 @@ THREE.BuildingUtils = {
         for (var i = 0; i < polygon1.length; i++) {
             var nextI = i+1;
             if (nextI >= polygon1.length) nextI = 0;
-            
+
             var line1 = THREE.BuildingUtils.lineFromVectors(polygon1[i], polygon1[nextI]);
-            
+
             // Compute all polygon2 lines
             for (var j = 0; j < polygon2.length; j++) {
                 nextJ = j+1;
                 if (nextJ >= polygon2.length) nextJ = 0;
-                
+
                 var line2 = THREE.BuildingUtils.lineFromVectors(polygon2[j], polygon2[nextJ]);
-                
+
                 // Ignore equivalent lines
                 if (line1[0] === line2[0] &&
                     line1[1] === line2[1] &&
                     line1[2] === line2[2]) {
                         continue;
                 }
-                
+
                 // Compute equation
                 var ans = THREE.BuildingUtils.eqSolver(line1[0], line1[1], line1[2], line2[0], line2[1], line2[2]);
-                
+
                 // Check if ans is inside the boundaries
                 if (THREE.BuildingUtils.isBetween(ans[0], polygon1[i].x, polygon1[nextI].x) &&
                     THREE.BuildingUtils.isBetween(ans[0], polygon2[j].x, polygon2[nextJ].x) &&
@@ -193,12 +193,12 @@ THREE.BuildingUtils = {
                     THREE.BuildingUtils.isBetween(ans[1], polygon2[j].y, polygon2[nextJ].y)) {
                         return true;
                 }
-                
+
             }
         }
         return false;
     },
-    
+
     // Angles
     degreesToRadians: function (degrees) {
         return degrees * Math.PI/180;

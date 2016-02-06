@@ -98,19 +98,19 @@ function getRandomBuildingRoofTexture() {
 
 // Create a random array with at least X elements as minimum
 function createRandomArray( allElementsArray, minNumberOfElements ) {
-		
+
 		if (minNumberOfElements === undefined) {
 				minNumberOfElements = 1;
 		}
-		
+
 		var elementsToReturn = [];
-		
+
 		for (var i = 0; i < allElementsArray.length; i++) {
-				if (THREE.Math.random16() < .5) {
+				if (Math.random() < .5) {
 						elementsToReturn.push(allElementsArray[i]);
 				}
 		}
-		
+
 		if (elementsToReturn.length >= minNumberOfElements) {
 				return elementsToReturn;
 		}
