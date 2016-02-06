@@ -4,20 +4,20 @@ var activeObject = null;
 var $container = $('#container');
 
 var viewportwidth = window.innerWidth,
-    viewportheight = window.innerHeight;
+  viewportheight = window.innerHeight;
 
 // Set size
-function setContainerSize () {
-    viewportwidth = window.innerWidth;
-    viewportheight = window.innerHeight;
-    $container.css('width',viewportwidth);
-    $container.css('height',viewportheight);
+function setContainerSize() {
+  viewportwidth = window.innerWidth;
+  viewportheight = window.innerHeight;
+  $container.css('width', viewportwidth);
+  $container.css('height', viewportheight);
 }
 setContainerSize();
 
 // set the scene size
 var WIDTH = viewportwidth,
-    HEIGHT = viewportheight;
+  HEIGHT = viewportheight;
 
 // Renderer
 var renderer = new THREE.WebGLRenderer();
@@ -28,13 +28,15 @@ $container.append(renderer.domElement);
 var scene = new THREE.Scene();
 
 // Ground
-var plane = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000, 1, 1), new THREE.MeshLambertMaterial({color: 0xffffff }));
-plane.rotation.x = -Math.PI/2;
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000, 1, 1), new THREE.MeshLambertMaterial({
+  color: 0xffffff
+}));
+plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
 
 // Camera
-var camera = new THREE.PerspectiveCamera(45, WIDTH/HEIGHT, .1, 10000);
-camera.position.set(0,150,250);
+var camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, .1, 10000);
+camera.position.set(0, 150, 250);
 rotateCamera(65);
 camera.lookAt(scene.position);
 scene.add(camera);
@@ -48,47 +50,49 @@ spotLight.position.set(300, 330, 150);
 scene.add(spotLight);
 
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating	 
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 // requestAnimationFrame polyfill by Erik Möller
 // fixes from Paul Irish and Tino Zijdel
 (function() {
-	var lastTime = 0;
-	var vendors = ['ms', 'moz', 'webkit', 'o'];
-	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-								   || window[vendors[x]+'CancelRequestAnimationFrame'];
-	}
-	if (!window.requestAnimationFrame)
-		window.requestAnimationFrame = function(callback, element) {
-			var currTime = new Date().getTime();
-			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-			  timeToCall);
-			lastTime = currTime + timeToCall;
-			return id;
-		};
-	if (!window.cancelAnimationFrame)
-		window.cancelAnimationFrame = function(id) {
-			clearTimeout(id);
-		};
+  var lastTime = 0;
+  var vendors = ['ms', 'moz', 'webkit', 'o'];
+  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+  }
+  if (!window.requestAnimationFrame)
+    window.requestAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function() {
+          callback(currTime + timeToCall);
+        },
+        timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+  if (!window.cancelAnimationFrame)
+    window.cancelAnimationFrame = function(id) {
+      clearTimeout(id);
+    };
 }());
 
 var lastTime = Date.now();
 
 function update() {
-    var delta = (Date.now()-lastTime)/1000;
-	
-    if (delta > 0) {
-	updateCameraPosition(delta);
-    }
-	
-    lastTime = Date.now();
-    timeOut = setTimeout(update, 40);
+  var delta = (Date.now() - lastTime) / 1000;
+
+  if (delta > 0) {
+    updateCameraPosition(delta);
+  }
+
+  lastTime = Date.now();
+  timeOut = setTimeout(update, 40);
 }
+
 function step() {
-    renderer.render(scene, camera);
-    requestAnimationFrame(step);
+  renderer.render(scene, camera);
+  requestAnimationFrame(step);
 }
 
 step();

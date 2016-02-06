@@ -1,16 +1,16 @@
 //var activeShapeAssistant = new ShapeAssistant();
 
 /******************
-**MOUSE************
-******************/
+ **MOUSE***********
+ ******************/
 /*// This function sets the active object
 function selectObject (id) {
 	// Remove visual identity of previous selected building
 	if (activeObject) activeObject.mesh.material.opacity = 1;
-	
+
 	if (id === 0) activeObject = world;
 	else activeObject = objectByIdLogic(id);
-	
+
 	switch (activeObject.type) {
 		case 0:
 		case 1:
@@ -33,7 +33,7 @@ function selectObject (id) {
 			$("#active-floor-height").val(activeObject.height);
 			break;
 	}
-	
+
 	showInterfaceForType(activeObject.type);
 }
 // This function clears the active object
@@ -42,7 +42,7 @@ function selectObject (id) {
 function unselectObject () {
 	// Remove visual identity of previous selected building
 	if (activeObject) activeObject.mesh.material.opacity = 1;
-	
+
 	activeObject = null;
 	$("#active-object-idLogic").val("");
 	$("#active-object-name").val("");
@@ -58,12 +58,12 @@ function moveCursor (x, y, z) {
 }
 $container.mousedown(function(e) {
 	e.preventDefault();
-	
+
     // Create vector in click position
     var vector = new THREE.Vector3((e.clientX/window.innerWidth) * 2 - 1, - (e.clientY/window.innerHeight) * 2 + 1, .5);
     projector.unprojectVector(vector, camera);
     var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-    
+
     switch (e.which) {
         case 1: // primary button
             var intersects = raycaster.intersectObject(plane);;
@@ -82,17 +82,17 @@ $container.mousedown(function(e) {
                     break;
             }
             break;
-            
+
         case 2: // wheel button
             break;
-            
+
         case 3: // secondary button
             // Check objects that collide with the vector
             var intersects = raycaster.intersectObjects(objects);
-	
+
 	        // We click somewhere on the map
 	        unselectObject();
-	
+
             if (intersects.length > 0) { // if we clicked on a object/building
 		        selectObject(intersects[0].object.idLogic);
             }
@@ -103,90 +103,89 @@ $container.mousedown(function(e) {
     }
 });*/
 // Avoid context menu in container
-$container.bind("contextmenu",function(e) {
-    return false;
+$container.bind("contextmenu", function(e) {
+  return false;
 });
 
 var mouseXpos = 0;
 var mouseYpos = 0;
 $(function() {
-    var leftButtonDown = false;
-    var middleButtonDown = false;
-    $container.mousedown(function(e){
-        // Left mouse button was pressed, set flag
-        if (e.which === 1) leftButtonDown = true;
-        // Middle mouse button was pressed, set flag
-        else if (e.which === 2) middleButtonDown = true;
-    });
-    $container.mouseup(function(e){
-        // Left mouse button was released, clear flag
-        if (e.which === 1) leftButtonDown = false;
-        // Middle mouse button was released, clear flag
-        else if (e.which === 2) middleButtonDown = false;
-    });
+  var leftButtonDown = false;
+  var middleButtonDown = false;
+  $container.mousedown(function(e) {
+    // Left mouse button was pressed, set flag
+    if (e.which === 1) leftButtonDown = true;
+    // Middle mouse button was pressed, set flag
+    else if (e.which === 2) middleButtonDown = true;
+  });
+  $container.mouseup(function(e) {
+    // Left mouse button was released, clear flag
+    if (e.which === 1) leftButtonDown = false;
+    // Middle mouse button was released, clear flag
+    else if (e.which === 2) middleButtonDown = false;
+  });
 
-    function tweakMouseMoveEvent(e){
-        // If left button is not set, set which to 0
-        // This indicates no buttons pressed
-        if (e.which === 1 && !leftButtonDown) e.which = 0;
-    }
+  function tweakMouseMoveEvent(e) {
+    // If left button is not set, set which to 0
+    // This indicates no buttons pressed
+    if (e.which === 1 && !leftButtonDown) e.which = 0;
+  }
 
-    $container.mousemove(function(e) {
-        var newmouseXpos = e.pageX;
-        var newmouseYpos = e.pageY;
-        
-        // Call the tweak function to check for LMB and set correct e.which
-        tweakMouseMoveEvent(e);
-        
-        /*if (action === "drawing") {
-            if (activeShapeAssistant.userShapePoints.length > 0) {
-                // Create vector in click position
-                var vector = new THREE.Vector3((e.clientX/window.innerWidth) * 2 - 1, - (e.clientY/window.innerHeight) * 2 + 1, .5);
-                projector.unprojectVector(vector, camera);
-                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-                var intersects = raycaster.intersectObject(plane);
-                if (intersects[0]) {
-                    if (typeof newLine !== "undefined") {
-                        if (!saveLine) {
-                            scene.remove(newLine);
-                        }
-                        else {
-                            scene.remove(newLine);
-                            activeShapeAssistant.lineAssistant.push(newLine);
-                            scene.add(activeShapeAssistant.lineAssistant[activeShapeAssistant.lineAssistant.length-1]);
-                            saveLine = false;
-                        }
+  $container.mousemove(function(e) {
+    var newmouseXpos = e.pageX;
+    var newmouseYpos = e.pageY;
+
+    // Call the tweak function to check for LMB and set correct e.which
+    tweakMouseMoveEvent(e);
+
+    /*if (action === "drawing") {
+        if (activeShapeAssistant.userShapePoints.length > 0) {
+            // Create vector in click position
+            var vector = new THREE.Vector3((e.clientX/window.innerWidth) * 2 - 1, - (e.clientY/window.innerHeight) * 2 + 1, .5);
+            projector.unprojectVector(vector, camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObject(plane);
+            if (intersects[0]) {
+                if (typeof newLine !== "undefined") {
+                    if (!saveLine) {
+                        scene.remove(newLine);
                     }
-                    var lastPoint = new THREE.Vector3(activeShapeAssistant.userShapePoints[activeShapeAssistant.userShapePoints.length-1].x, 1, activeShapeAssistant.userShapePoints[activeShapeAssistant.userShapePoints.length-1].y);
-                    var mousePoint = new THREE.Vector3(intersects[0].point.x, 1, intersects[0].point.z);
-                    var geometry = new THREE.Geometry();
-                    geometry.vertices.push(lastPoint);
-                    geometry.vertices.push(mousePoint);
-                    newLine = new THREE.Line(geometry, activeShapeAssistant.material);
-                    scene.add(newLine);
+                    else {
+                        scene.remove(newLine);
+                        activeShapeAssistant.lineAssistant.push(newLine);
+                        scene.add(activeShapeAssistant.lineAssistant[activeShapeAssistant.lineAssistant.length-1]);
+                        saveLine = false;
+                    }
                 }
-            }
-        }*/
-        
-        if (middleButtonDown) {
-            if (newmouseXpos !== mouseXpos) {
-                rotateCamera((mouseXpos - newmouseXpos)/8);
-                console.log((mouseXpos - newmouseXpos)/8);
-            }
-            
-            if (newmouseYpos > mouseYpos) {
-                //rotateCamera("up");
-            }
-            else if (newmouseYpos < mouseYpos) {
-                //rotateCamera("down");
+                var lastPoint = new THREE.Vector3(activeShapeAssistant.userShapePoints[activeShapeAssistant.userShapePoints.length-1].x, 1, activeShapeAssistant.userShapePoints[activeShapeAssistant.userShapePoints.length-1].y);
+                var mousePoint = new THREE.Vector3(intersects[0].point.x, 1, intersects[0].point.z);
+                var geometry = new THREE.Geometry();
+                geometry.vertices.push(lastPoint);
+                geometry.vertices.push(mousePoint);
+                newLine = new THREE.Line(geometry, activeShapeAssistant.material);
+                scene.add(newLine);
             }
         }
-        mouseXpos = newmouseXpos;
-        mouseYpos = newmouseYpos;
-    });
+    }*/
+
+    if (middleButtonDown) {
+      if (newmouseXpos !== mouseXpos) {
+        rotateCamera((mouseXpos - newmouseXpos) / 8);
+        console.log((mouseXpos - newmouseXpos) / 8);
+      }
+
+      if (newmouseYpos > mouseYpos) {
+        //rotateCamera("up");
+      } else if (newmouseYpos < mouseYpos) {
+        //rotateCamera("down");
+      }
+    }
+    mouseXpos = newmouseXpos;
+    mouseYpos = newmouseYpos;
+  });
 });
 
 // Zoom
 $container.mousewheel(function(e, delta) {
-	zoom(delta);
+  zoom(delta);
 });
