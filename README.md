@@ -8,12 +8,14 @@ Procedural Building Generator using three.js. This was my Computer Science degre
 * Slides (in Catalan): http://www.albertjuhe.com/files/tfg/slides/index.html
 
 # TODO
+
 ## Big features
 * [ ] Make Nordic-style roofs.
 * [ ] Gardens.
 * [ ] Procedural decorative elements.
 * [ ] Procedural textures.
 * [ ] Generate polygon tree from a random shape. That would allow taking a map and generating a building for each plant.
+
 ## Current features improvements
 * [ ] Roof textures rotation.
 * [ ] Improve camera
@@ -22,6 +24,7 @@ Procedural Building Generator using three.js. This was my Computer Science degre
 * [ ] Unnecessary polygons rendered when floors are smaller than the previous one, since all roof is rendered but only a small part is visible.
 * [x] `FloorGeometry`s should have strict rotations (0, 45, 90 degrees...) instead of any value.
 * [x] Make demo work in all modern browsers.
+
 ## Code style
 * [ ] Add tests.
 * [ ] `functions.js` should be merged into `BuildingUtils.js`.
