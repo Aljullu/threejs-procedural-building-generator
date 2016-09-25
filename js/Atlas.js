@@ -5,10 +5,6 @@ Atlas = function(texturePathsArray) {
   canvas.setAttribute("id", "atlas");
   ctx = canvas.getContext('2d');
 
-  // TODO remove
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, 1024, 1024);
-
   for (var i = 0; i < texturePathsArray.length; i++) {
     this.addTexture(i, texturePathsArray[i])
   }

@@ -22,6 +22,7 @@ html, body {
 	text-align: center;
 }
 #atlas {
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
 	width: 242px;
 }
 #editor {
