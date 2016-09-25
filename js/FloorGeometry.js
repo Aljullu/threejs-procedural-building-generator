@@ -309,7 +309,8 @@ THREE.FloorGeometry.prototype.insertRoofElements = function(elementsToInsert, sh
         var geometry = elementsToInsert[i].clone();
 
         // Rotate
-        geometry.applyMatrix(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(-Math.PI / 2, THREE.BuildingUtils.randomBetween(-Math.PI, Math.PI), 0)));
+        var possibleRotations = [-Math.PI*3/4, -Math.PI/2, -Math.PI/4, 0, Math.PI/4, Math.PI/2, Math.PI*3/4];
+        geometry.applyMatrix(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(-Math.PI / 2, THREE.BuildingUtils.randomOn(possibleRotations))));
 
         // Calculate bounding box
         var boundingBox = THREE.BuildingUtils.getBoundingBox(geometry.vertices);
