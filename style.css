@@ -92,6 +92,13 @@ label:not(.radio) {
 legend + label:not(.radio) {
 	border-top: 0;
 }
+.credits {
+	display: block;
+	font-size: .8rem;
+	margin: 20px auto;
+	text-align: center;
+	text-decoration: none;
+}
 #create-building-wrapper,
 #progress-wrapper,
 #reset-camera-wrapper {
