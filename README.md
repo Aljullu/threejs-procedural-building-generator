@@ -7,25 +7,25 @@ Procedural Building Generator using three.js. This was my Computer Science degre
 * Thesis (in Catalan): http://www.albertjuhe.com/files/tfg/tfg-albert-juhe-lluveras-122149.pdf
 * Slides (in Catalan): http://www.albertjuhe.com/files/tfg/slides/index.html
 
-# TODO
+## TODO
 
-## Big features
+### Big features
 * [ ] Make Nordic-style roofs.
 * [ ] Gardens.
 * [ ] Procedural decorative elements.
 * [ ] Procedural textures.
-* [ ] Generate polygon tree from a random shape. That would allow taking a map and generating a building for each plant.
+* [ ] Generate a polygon tree from a random shape. That would allow taking a map and generating a building for each plant.
 
-## Current features improvements
+### Current features improvements
 * [ ] Roof textures rotation.
 * [ ] Improve camera
-* [ ] `FloorGeometry`'s `insertRoofElements` should be more intelligent and generate random positions based on the bounding box size, so collisions against the border are less usual.
+* [ ] `FloorGeometry`'s `insertRoofElements` should be more intelligent and generate random positions based on the bounding box, so collisions against the border are less usual.
 * [ ] Load meshes in parallel.
 * [ ] Unnecessary polygons rendered when floors are smaller than the previous one, since all roof is rendered but only a small part is visible.
 * [x] `FloorGeometry`s should have strict rotations (0, 45, 90 degrees...) instead of any value.
 * [x] Make demo work in all modern browsers.
 
-## Code style
+### Code style
 * [ ] Add tests.
 * [ ] `functions.js` should be merged into `BuildingUtils.js`.
 * [ ] `createBuildingGeometry` function in `Building.js` is huge. Split it in smaller functions.
