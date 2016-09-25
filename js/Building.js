@@ -401,7 +401,7 @@ function Building(parameters) {
       // Clone shape
       oldFloorGeometryParametersShape = floorGeometryParameters.shape.clone();
       if (nextFloorWithDifferentShape) {
-        floorGeometryParameters.shape.pruneRules(0, 1 / numberOfFloors * 2); // TODO: 1/numberOfFloors*2 should be a parameters
+        floorGeometryParameters.shape.pruneRules(0, 1 / numberOfFloors * 2); // TODO: 1/numberOfFloors*2 should be a parameter
       }
       acomulatedHeight += parseFloat(floorGeometryParameters.height);
     }
