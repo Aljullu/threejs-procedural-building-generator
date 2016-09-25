@@ -21,7 +21,7 @@ Atlas.prototype = {
     var img = new Image();
     img.src = texturePath;
     img.onload = function(e) {
-      ctx.drawImage(e.srcElement, (i % 4) * 256, Math.floor(i / 4) * 256, 256, 256);
+      ctx.drawImage(e.target, (i % 4) * 256, Math.floor(i / 4) * 256, 256, 256);
     };
   },
 
