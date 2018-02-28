@@ -4,9 +4,9 @@
 function Building(parameters) {
   if (debug) {
     start = new Date().getTime();
-    $("#create-building-wrapper").hide();
-    $("#progress-wrapper").show();
-    $("#progress").attr("value", 0);
+    document.getElementById("create-building-wrapper").setAttribute('hidden', true);
+    document.getElementById("progress-wrapper").removeAttribute('hidden');
+    document.getElementById("progress").setAttribute('value', 0);
   }
 
   // Allow accessing this inside functions
@@ -260,7 +260,7 @@ function Building(parameters) {
     // Create floors' geometry
     for (var i = 0; i < numberOfFloors; i++) {
 
-      if (debug) $("#progress").attr("value", 20 + i / numberOfFloors * 60);
+      if (debug) document.getElementById("progress").setAttribute("value", 20 + i / numberOfFloors * 60);
 
       // Clone common parameters
       var floorGeometryParameters = [];
@@ -415,7 +415,7 @@ function Building(parameters) {
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
 
-    if (debug) $("#progress").attr("value", typeLoading / numberOfMeshesToLoad * 20);
+    if (debug) document.getElementById("progress").setAttribute("value", typeLoading / numberOfMeshesToLoad * 20);
 
     // Get mesh and texture paths
     var meshPath = ''; // default value
@@ -479,10 +479,9 @@ function Building(parameters) {
 
     if (debug) {
       var time = new Date().getTime() - start;
-      $("#progress").attr("value", 100);
-      $("#progress-wrapper").fadeOut(200, function() {
-        $("#create-building-wrapper").fadeIn(200);
-      });
+      document.getElementById("progress").setAttribute("value", 100);
+      document.getElementById("progress-wrapper").setAttribute('hidden', true);
+      document.getElementById("create-building-wrapper").removeAttribute('hidden');
       console.log('Building built in: ' + time + 'ms');
       console.log("Number of vertices: " + scope.mesh.geometry.vertices.length);
     }

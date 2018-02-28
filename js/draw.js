@@ -1,7 +1,7 @@
 var activeObject = null;
 
 // get the DOM element of the container
-var $container = $('#container');
+var $container = document.getElementById('container');
 
 var viewportwidth = window.innerWidth,
   viewportheight = window.innerHeight;
@@ -10,8 +10,8 @@ var viewportwidth = window.innerWidth,
 function setContainerSize() {
   viewportwidth = window.innerWidth;
   viewportheight = window.innerHeight;
-  $container.css('width', viewportwidth);
-  $container.css('height', viewportheight);
+  $container.setAttribute('width', viewportwidth);
+  $container.setAttribute('height', viewportheight);
 }
 setContainerSize();
 
@@ -22,7 +22,7 @@ var WIDTH = viewportwidth,
 // Renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(WIDTH, HEIGHT);
-$container.append(renderer.domElement);
+$container.appendChild(renderer.domElement);
 
 // Scene
 var scene = new THREE.Scene();

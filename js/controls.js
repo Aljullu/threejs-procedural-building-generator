@@ -2,37 +2,40 @@
 /******************
  **INTERFACE********
  ******************/
-$(document).ready(function() {
-  $("input[type='range']").change(function() {
-    var array = $(this).attr("id").split("-");
-    $("#" + array[0]).val($(this).val());
+window.onload = function() {
+  document.querySelectorAll("input[type='range']").forEach(function(el) {
+    el.onchange = function(e) {
+      var array = this.getAttribute("id").split("-");
+      document.getElementById(array[0]).value = e.target.value;
+    };
   });
-  $("input[type='number']").change(function() {
-    $("#" + $(this).attr("id") + "-range").val($(this).val());
-  });
-  $("input[name=display]").change(function() {
-    var display = $("input[name=display]:checked").attr("data-layer");
-    $("canvas").hide();
-    console.log("#" + display);
-    $("#" + display).show();
-  });
-  $("input[name=mode]").change(function() {
-    var mode = $("input[name=mode]:checked").attr("id");
 
-    if (mode === "parameters") {
-      $("fieldset.parameters").each(function() {
-        $(this).slideDown();
-      });
-    } else {
-      $("fieldset.parameters").each(function() {
-        $(this).slideUp();
-      });
+  document.querySelectorAll("input[type='number']").forEach(function(el) {
+    el.onchange = function(e) {
+      document.getElementById(this.getAttribute("id") + "-range").value = e.target.value;
+    };
+  });
+
+  document.querySelectorAll("input[name=mode]").forEach(function(el) {
+    el.onchange = function() {
+      var mode = document.querySelector("input[name=mode]:checked").getAttribute("id");
+
+      if (mode === "parameters") {
+        document.querySelectorAll("fieldset.parameters").forEach(function(el) {
+          el.removeAttribute('hidden');
+        });
+      } else {
+        document.querySelectorAll("fieldset.parameters").forEach(function(el) {
+          el.setAttribute('hidden', 'true');
+        });
+      }
     }
   });
-  $("#create-building").click(function() {
+
+  document.getElementById("create-building").onclick = function() {
     scene.remove(building.mesh);
-    $("#atlas").remove();
-    var mode = $("input[name=mode]:checked").attr("id");
+    document.getElementById("atlas").remove();
+    var mode = document.querySelector("input[name=mode]:checked").getAttribute("id");
     if (mode === "random") {
       newBuilding = new Building({
         'mode': "random"
@@ -40,20 +43,20 @@ $(document).ready(function() {
     } else if (mode === "parameters") {
       newBuilding = new Building({
         'mode': "random",
-        'height': $("#height").val(),
-        'posX': $("#posx").val(),
-        'posZ': $("#posz").val(),
-        'sizeX': $("#sizex").val(),
-        'sizeZ': $("#sizez").val(),
-        'floorHeight': $("#floorHeight").val(),
-        'windowsGroup': $("input[name=windowsGroup]:checked").attr("id"),
-        'windowsSeparation': parseFloat($("#windowsSeparation").val()),
-        'probabilityNextFloorDifferentShape': $("#probabilityNextFloorDifferentShape").val(),
-        'minSolidWidth': parseInt($("#minSolidWidth").val()),
-        'maxSolidWidth': parseInt($("#maxSolidWidth").val()),
-        'windowRepetition': $("input[name=windowRepetition]:checked").attr("id"),
-        'textureWall': $("#wallTexture").val(),
-        'textureRoof': $("#roofTexture").val()
+        'height': document.getElementById("height").value,
+        'posX': document.getElementById("posx").value,
+        'posZ': document.getElementById("posz").value,
+        'sizeX': document.getElementById("sizex").value,
+        'sizeZ': document.getElementById("sizez").value,
+        'floorHeight': document.getElementById("floorHeight").value,
+        'windowsGroup': document.querySelector("input[name=windowsGroup]:checked").getAttribute("id"),
+        'windowsSeparation': parseFloat(document.getElementById("windowsSeparation").value),
+        'probabilityNextFloorDifferentShape': document.getElementById("probabilityNextFloorDifferentShape").value,
+        'minSolidWidth': parseInt(document.getElementById("minSolidWidth").value),
+        'maxSolidWidth': parseInt(document.getElementById("maxSolidWidth").value),
+        'windowRepetition': document.querySelector("input[name=windowRepetition]:checked").getAttribute("id"),
+        'textureWall': document.getElementById("wallTexture").value,
+        'textureRoof': document.getElementById("roofTexture").value
       });
     } else {
       newBuilding = new Building({
@@ -61,18 +64,54 @@ $(document).ready(function() {
       });
     }
     building = newBuilding;
-    $("#display-atlas").append(canvas);
-  });
+    document.getElementById("display-atlas").appendChild(canvas);
+  };
 
-  $("#reset-camera").click(function() {
+  document.getElementById("reset-camera").onclick = function() {
     cameraAngleX = 0;
     cameraAngleY = 0;
     camera.position.set(0, 150, 250);
     rotateCamera(65);
     camera.lookAt(scene.position);
-  });
-  $("#display-atlas").append(canvas);
-});
+  };
+  document.getElementById("display-atlas").appendChild(canvas);
+
+  var mouseXpos = 0;
+  var mouseYpos = 0;
+  var middleButtonDown = false;
+
+  $container.oncontextmenu = function(e) {
+    e.preventDefault();
+  };
+
+  $container.onmousedown = function(e) {
+    if (e.which === 2) middleButtonDown = true;
+  };
+
+  $container.onmouseup = function(e) {
+    if (e.which === 2) middleButtonDown = false;
+  };
+
+  $container.onmousemove = function(e) {
+    var newmouseXpos = e.pageX;
+    var newmouseYpos = e.pageY;
+
+    if (middleButtonDown) {
+      if (newmouseXpos !== mouseXpos ||
+        newmouseYpos !== mouseYpos) {
+        var anglesToRotateX = parseInt((mouseXpos - newmouseXpos) / 4) * -1;
+        var anglesToRotateY = parseInt((mouseYpos - newmouseYpos) / 4) * -1;
+        if (anglesToRotateX !== 0 ||
+          anglesToRotateY !== 0) {
+          rotateCamera(anglesToRotateX, anglesToRotateY);
+        }
+      }
+    }
+
+    mouseXpos = newmouseXpos;
+    mouseYpos = newmouseYpos;
+  };
+};
 
 /******************
  **KEYBOARD*********
@@ -90,7 +129,8 @@ var KEYS = {
   D: false,
   W: false
 };
-$(document).keydown(function(e) {
+
+window.onkeydown = function(e) {
   switch (e.which) {
     case 33: //AvPág
       KEYS.AVPAG = true;
@@ -126,8 +166,8 @@ $(document).keydown(function(e) {
       KEYS.W = true;
       break;
   }
-});
-$(document).keyup(function(e) {
+};
+window.onkeyup = function(e) {
   switch (e.which) {
     case 33: //AvPág
       KEYS.AVPAG = false;
@@ -163,78 +203,17 @@ $(document).keyup(function(e) {
       KEYS.W = false;
       break;
   }
-});
+};
 
-/******************
- **WINDOW***********
- ******************/
 // Resize canvas and update view on window resize
-$(window).resize(function() {
+window.onresize = function() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   setContainerSize();
-});
+};
 
-// Avoid context menu in container
-$(document).ready(function() {
-  $container.bind("contextmenu", function(e) {
-    return false;
-  });
-});
-
-
-/******************
- **MOUSE************
- ******************/
-var mouseXpos = 0;
-var mouseYpos = 0;
-$(document).ready(function() {
-  var leftButtonDown = false;
-  var middleButtonDown = false;
-  $container.mousedown(function(e) {
-    // Left mouse button was pressed, set flag
-    if (e.which === 1) leftButtonDown = true;
-    // Middle mouse button was pressed, set flag
-    else if (e.which === 2) middleButtonDown = true;
-  });
-  $container.mouseup(function(e) {
-    // Left mouse button was released, clear flag
-    if (e.which === 1) leftButtonDown = false;
-    // Middle mouse button was released, clear flag
-    else if (e.which === 2) middleButtonDown = false;
-  });
-
-  function tweakMouseMoveEvent(e) {
-    // If left button is not set, set which to 0
-    // This indicates no buttons pressed
-    if (e.which === 1 && !leftButtonDown) e.which = 0;
-  }
-
-  $container.mousemove(function(e) {
-    var newmouseXpos = e.pageX;
-    var newmouseYpos = e.pageY;
-
-    // Call the tweak function to check for LMB and set correct e.which
-    tweakMouseMoveEvent(e);
-
-    if (middleButtonDown) {
-      if (newmouseXpos !== mouseXpos ||
-        newmouseYpos !== mouseYpos) {
-        var anglesToRotateX = parseInt((mouseXpos - newmouseXpos) / 4) * -1;
-        var anglesToRotateY = parseInt((mouseYpos - newmouseYpos) / 4) * -1;
-        if (anglesToRotateX !== 0 ||
-          anglesToRotateY !== 0) {
-          rotateCamera(anglesToRotateX, anglesToRotateY);
-        }
-      }
-    }
-    mouseXpos = newmouseXpos;
-    mouseYpos = newmouseYpos;
-  });
-
-  // Zoom
-  $container.mousewheel(function(e, delta) {
-    zoom(delta);
-  });
-});
+// Zoom
+$container.onwheel = function(e) {
+  zoom(- e.deltaY / 4);
+};

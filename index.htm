@@ -18,7 +18,7 @@
 					<label><input type="radio" name="mode" id="random" checked/> Random</label>
 					<label><input type="radio" name="mode" id="parameters"/> Parameters</label>
 				</fieldset>
-				<fieldset class="parameters" style="display:none;">
+				<fieldset class="parameters" hidden>
 					<legend>Position and size</legend>
 					<label for="posx">PosX:</label><input id="posx-range" type="range" min="-250" max="250" value="0"/><input id="posx" type="number" value="0"/>
 					<label for="posz">PosY:</label><input id="posz-range" type="range" min="-250" max="250" value="0"/><input id="posz" type="number" value="0"/>
@@ -27,7 +27,7 @@
 					<label for="height">Height:</label><input id="height-range" type="range" min="0" max="250" value="50"/><input id="height" type="number" min="0" value="50"/>
 					<label for="floorHeight">FloorHeight:</label><input id="floorHeight-range" type="range" min="0" max="20" step="0.1" value="5"/><input id="floorHeight" type="number" min="0" step="0.1" value="5"/>
 				</fieldset>
-				<fieldset class="parameters" style="display:none;">
+				<fieldset class="parameters" hidden>
 					<legend>Windows</legend>
 					<label for="windowsGroup">Windows Group:</label>
 					<label class="radio"><input type="radio" name="windowsGroup" id="pairs" checked/>Pairs</label><br/>
@@ -37,7 +37,7 @@
 					<label class="radio"><input type="radio" name="windowRepetition" id="lineal"/>Lineal</label>
 					<label for="windowsSeparation">Windows Separation:</label><input id="windowsSeparation-range" type="range" min="0" max="15" step="0.1" value="5"/><input id="windowsSeparation" type="number" min="0" step="0.1" value="5"/>
 				</fieldset>
-				<fieldset class="parameters" style="display:none;">
+				<fieldset class="parameters" hidden>
 					<legend>Other</legend>
 					<label for="wallTexture">Wall texture:</label><input type="text" id="wallTexture" list="wallTextures" value="./textures/wall/brick-wall.jpg"/>
 					<label for="roofTexture">Roof texture:</label><input type="text" id="roofTexture" list="roofTextures" value="./textures/roof/concrete-bare.jpg"/>
@@ -96,8 +96,6 @@
 			</div>
 		</div>
 	</body>
-	<script src="js/jquery-2.0.1.min.js"></script>
-	<script src="js/jquery.mousewheel.min.js"></script>
 	<script src="js/three.js"></script>
 	<script src="js/BuildingUtils.js"></script>
 	<script src="js/Atlas.js"></script>
