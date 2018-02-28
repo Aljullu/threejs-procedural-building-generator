@@ -111,6 +111,11 @@ window.onload = function() {
     mouseXpos = newmouseXpos;
     mouseYpos = newmouseYpos;
   };
+
+  // Zoom
+  $container.onwheel = function(e) {
+    zoom(- e.deltaY / 4);
+  };
 };
 
 /******************
@@ -211,9 +216,4 @@ window.onresize = function() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   setContainerSize();
-};
-
-// Zoom
-$container.onwheel = function(e) {
-  zoom(- e.deltaY / 4);
 };
