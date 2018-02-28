@@ -68,12 +68,12 @@ function rotateCamera(deltaX, deltaY) {
 }
 
 function updateCameraPosition(delta) {
-  if (KEYS.LEFT) moveCamera(delta, "left");
-  if (KEYS.RIGHT) moveCamera(delta, "right");
-  if (KEYS.UP) moveCamera(delta, "up");
-  if (KEYS.DOWN) moveCamera(delta, "down");
-  if (KEYS.AVPAG) zoom(delta);
-  if (KEYS.REPAG) zoom(-delta);
+  if (KEYS.LEFT) moveCamera(delta * 2, "left");
+  if (KEYS.RIGHT) moveCamera(delta * 2, "right");
+  if (KEYS.UP) moveCamera(delta * 2, "up");
+  if (KEYS.DOWN) moveCamera(delta * 2, "down");
+  if (KEYS.AVPAG) zoom(delta * 4);
+  if (KEYS.REPAG) zoom(-delta * 4);
   if (KEYS.A) rotateCamera(delta * 50);
   if (KEYS.D) rotateCamera(-delta * 50);
 
