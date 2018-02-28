@@ -5,7 +5,7 @@ function moveCamera(delta, direction) {
   // vector where camera is looking at in camera space
   var pLocal = new THREE.Vector3(0, 0, -1);
   // convert to world space
-  var dirCam = pLocal.applyProjection(camera.matrixWorld);
+  var dirCam = pLocal.applyMatrix4(camera.matrixWorld);
   // normalize
   dirCam.sub(camera.position).normalize();
 
@@ -36,7 +36,7 @@ function rotateCamera(deltaX, deltaY) {
   var pLocal = new THREE.Vector3(0, 0, -1);
 
   // Convert to world space
-  var dirCam = pLocal.applyProjection(camera.matrixWorld);
+  var dirCam = pLocal.applyMatrix4(camera.matrixWorld);
 
   // Ray
   var raycaster = new THREE.Raycaster(camera.position, dirCam.sub(camera.position).normalize());
@@ -84,7 +84,7 @@ function zoom(delta) {
   // vector where camera is looking at in camera space
   var pLocal = new THREE.Vector3(0, 0, -1);
   // convert to world space
-  var dirCam = pLocal.applyProjection(camera.matrixWorld);
+  var dirCam = pLocal.applyMatrix4(camera.matrixWorld);
 
   // normalize
   dirCam.sub(camera.position).normalize();
